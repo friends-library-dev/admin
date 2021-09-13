@@ -165,6 +165,8 @@ const CreateOrder: React.FC = () => {
             subtle
             placeholder="Street Address, P.O. Box, C/O"
             value={address.street}
+            isValid={(val) => val.length <= 30}
+            invalidMessage="Must be 30 characters or less"
             onChange={(newValue) => setAddress({ ...address, street: newValue })}
           />
           <TextInput
@@ -173,6 +175,8 @@ const CreateOrder: React.FC = () => {
             placeholder="Apartment, suite, unit, etc"
             subtle
             optional
+            isValid={(val) => val.length <= 30}
+            invalidMessage="Must be 30 characters or less"
             value={address.street2 ?? ``}
             onChange={(newValue) => setAddress({ ...address, street2: newValue })}
           />
@@ -291,19 +295,25 @@ function addressValid(address: OrderAddress, email: string): boolean {
 
   for (const [key, value] of Object.entries(address)) {
     const trimmed = (value as string | undefined)?.trim();
+    const length = trimmed?.length || 0;
     switch (key) {
       case `country`:
-        if (trimmed?.length !== 2) {
+        if (length !== 2) {
+          return false;
+        }
+        break;
+      case `street`:
+        if (length > 30) {
           return false;
         }
         break;
       case `street2`:
-        if (trimmed !== undefined && trimmed !== `` && trimmed.length < 2) {
+        if (trimmed !== undefined && trimmed !== `` && (length < 2 || length > 30)) {
           return false;
         }
         break;
       default:
-        if (!trimmed || trimmed.length < 2) {
+        if (length < 2) {
           return false;
         }
     }

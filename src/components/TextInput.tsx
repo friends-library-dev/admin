@@ -110,7 +110,7 @@ const TextInput: React.FC<Props> = ({
           </div>
         )}
       </div>
-      {!valid && <p className="mt-2 text-sm text-red-600">{invalidMessage}</p>}
+      {!valid && <p className="mt-1 text-sm text-red-600">* {invalidMessage}</p>}
     </div>
   );
 };
