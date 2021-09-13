@@ -1,0 +1,26 @@
+name: basic-ci
+
+on: push
+
+env:
+  SNOWPACK_PUBLIC_FLP_REST_API_ENDPOINT: http://notreal.com
+  SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT: http://notreal.com
+  SNOWPACK_PUBLIC_PRINT_JOB_FEES_ENDPOINT: http://notreal.com
+
+jobs:
+  ci:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: lint
+        run: npm run lint
+      - name: ts
+        run: npm run ts:check
+      - name: test
+        run: npm run test
+      - name: prettier
+        run: npm run format -- --check
+      - name: build
+        run: npm run build
