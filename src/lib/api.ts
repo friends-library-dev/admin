@@ -62,7 +62,7 @@ export async function createOrder(
   }
 
   const createOrderInput = {
-    lang: `en`,
+    lang: items.some((i) => i.lang === `es`) ? `es` : `en`,
     email,
     source: `internal`,
     items: items.map((item) => ({

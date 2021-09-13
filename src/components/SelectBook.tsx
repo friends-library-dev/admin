@@ -87,6 +87,7 @@ const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
               onClick={() => {
                 onSelect({
                   id: uuid(),
+                  lang: edition.lang,
                   editionId: edition.id,
                   image: edition.image.small,
                   orderTitle: `${edition.document.title}${

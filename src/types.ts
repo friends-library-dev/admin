@@ -1,10 +1,11 @@
-import { EditionType, PrintSize } from '@friends-library/types';
+import { EditionType, PrintSize, Lang } from '@friends-library/types';
 import { AdminOrderEditionResourceV1 } from '@friends-library/api';
 
 export type Edition = AdminOrderEditionResourceV1 & { searchString: string };
 
 export interface OrderItem {
   id: string;
+  lang: Lang;
   displayTitle: string;
   orderTitle: string;
   author: string;
