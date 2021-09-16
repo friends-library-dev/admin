@@ -47,6 +47,7 @@ export async function createOrder(
   address: OrderAddress,
   items: OrderItem[],
   email: string,
+  requestId: string,
   token: string,
 ): Promise<Result<string>> {
   const feesResult = await getPrintJobFees(address, items);
@@ -85,6 +86,7 @@ export async function createOrder(
     ccFeeOffset: 0, // it's our own credit card, so no need to offset
     printJobStatus: `presubmit`,
     shippingLevel: shippingLevel.toLowerCase(),
+    freeOrderRequestId: requestId.trim() || null,
     paymentId: `internal--complimentary--${uuid().split(`-`).shift()}`,
   };
 
@@ -119,6 +121,65 @@ export async function createOrder(
     };
   } catch (error: unknown) {
     return { success: false, error: String(error) };
+  }
+}
+
+export async function getFreeOrderRequest(
+  requestId: string,
+): Promise<Result<OrderAddress & { email: string }>> {
+  try {
+    const ENDPOINT = import.meta.env.SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT;
+    const res = await fetch(ENDPOINT, {
+      method: `POST`,
+      headers: { 'Content-Type': `application/json` },
+      body: JSON.stringify({
+        query: QUERY_REQUEST,
+        variables: { id: requestId },
+      }),
+    });
+    if (res.status !== 200) {
+      return {
+        success: false,
+        error: `Unexpected response status: ${res.status}`,
+      };
+    }
+    const json = await res.json();
+    if (typeof json.data?.request !== `object`) {
+      return {
+        success: false,
+        error: `Unexpected response json: ${JSON.stringify(json)}`,
+      };
+    }
+
+    const request: {
+      email: string;
+      name: string;
+      addressStreet: string;
+      addressStreet2: string | null;
+      addressCity: string;
+      addressState: string;
+      addressZip: string;
+      addressCountry: string;
+    } = json.data.request;
+
+    return {
+      success: true,
+      value: {
+        name: request.name,
+        email: request.email,
+        street: request.addressStreet,
+        ...(request.addressStreet2 ? { street2: request.addressStreet2 } : {}),
+        city: request.addressCity,
+        state: request.addressState,
+        zip: request.addressZip,
+        country: request.addressCountry,
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error),
+    };
   }
 }
 
@@ -200,6 +261,21 @@ const CREATE_ORDER = gql`
   mutation CreateOrder($input: CreateOrderInput!) {
     order: createOrder(input: $input) {
       id
+    }
+  }
+`;
+
+const QUERY_REQUEST = gql`
+  query GetFreeOrderRequest($id: String!) {
+    request: getFreeOrderRequest(id: $id) {
+      email
+      name
+      addressStreet
+      addressStreet2
+      addressCity
+      addressState
+      addressZip
+      addressCountry
     }
   }
 `;

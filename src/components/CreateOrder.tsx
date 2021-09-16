@@ -35,7 +35,23 @@ const CreateOrder: React.FC = () => {
   const [submittingOrder, setSubmittingOrder] = useState(false);
   const [submitResult, setSubmitResult] = useState<Result<string> | null>(null);
   const [email, setEmail] = useState(``);
+  const [requestId, setRequestId] = useState(``);
   const [address, setAddress] = useState<OrderAddress>(emptyAddress());
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const requestId = query.get(`request`);
+    if (!requestId) return;
+    setRequestId(requestId);
+    api.getFreeOrderRequest(requestId).then((result) => {
+      if (!result.success) {
+        alert(`Failed to retrieve order data for id=${requestId}`);
+        return;
+      }
+      setEmail(result.value.email);
+      setAddress(result.value);
+    });
+  }, []);
 
   useEffect(() => {
     if (editions === null) {
@@ -210,6 +226,15 @@ const CreateOrder: React.FC = () => {
             setSelected={(newValue) => setAddress({ ...address, country: newValue })}
             options={countries}
           />
+          <TextInput
+            type="text"
+            label="Request ID"
+            subtle
+            optional
+            placeholder="12034482-5410-4db7-a9f3-c12f34565a55"
+            value={requestId}
+            onChange={(newValue) => setRequestId(newValue)}
+          />
         </div>
         <div className="flex my-3">
           <PillButton
@@ -245,14 +270,19 @@ const CreateOrder: React.FC = () => {
           onClick={async () => {
             setSubmittingOrder(true);
             const token = localStorage.getItem(`token`) ?? ``;
-            const result = await api.createOrder(address, items, email, token);
+            const result = await api.createOrder(address, items, email, requestId, token);
             setSubmittingOrder(false);
             setSubmitResult(result);
             if (result.success) {
               setItems([]);
               setAddress(emptyAddress());
               setEmail(``);
-              setTimeout(() => setSubmitResult(null), 10000);
+              const refresh = requestId.trim() !== ``;
+              setRequestId(``);
+              setTimeout(() => {
+                setSubmitResult(null);
+                refresh && (window.location.href = `/`);
+              }, 10000);
             }
           }}
         >
