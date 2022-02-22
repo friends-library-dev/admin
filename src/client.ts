@@ -1,9 +1,12 @@
 import { gql } from '@apollo/client';
 import { getClient } from '@friends-library/db';
 
+const token = localStorage.getItem(`token`);
+
 export default getClient({
-  env: `dev`, // @TODO
-  token: localStorage.getItem(`token`) ?? ``,
+  env: `infer_web`,
+  href: window.location.href,
+  ...(token ? { token } : {}),
 });
 
 export { gql };
