@@ -31,6 +31,8 @@ const SignIn: React.FC<Props> = ({ setToken }) => {
           setError(`Error checking token${error ? `: ${error}` : ``}`);
         } else {
           setToken(input);
+          // refresh the page so the client can be initialized with a token
+          setTimeout(() => window.location.reload(), 50);
         }
       } catch (err) {
         setError(`Error: ${err}`);
