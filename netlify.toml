@@ -1,0 +1,10 @@
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "https://flp-admin.netlify.app"
+  to = "https://admin.friendslibrary.com"
+  status = 301
+  force = true
