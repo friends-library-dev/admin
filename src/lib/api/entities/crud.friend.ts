@@ -5,7 +5,7 @@ import { DeleteFriend, DeleteFriendVariables } from '../../../graphql/DeleteFrie
 import { UpdateFriendInput } from '../../../graphql/globalTypes';
 import { UpdateFriend, UpdateFriendVariables } from '../../../graphql/UpdateFriend';
 import { EditableFriend, ErrorMsg } from '../../../types';
-import { mutate, prepIds } from './helpers';
+import { mutate, prepIds, swiftDate } from './helpers';
 
 export async function create(friend: EditableFriend): Promise<ErrorMsg | null> {
   return mutate(`create`, friend, () =>
@@ -73,7 +73,7 @@ function friendInput(friend: EditableFriend): UpdateFriendInput {
     id: friend.id,
     lang: friend.lang,
     name: friend.name,
-    published: friend.published,
+    published: swiftDate(friend.published),
     slug: friend.slug,
   });
 }

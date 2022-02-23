@@ -37,6 +37,11 @@ export function prepIds<T extends Record<string, unknown>>(record: T): T {
   return record;
 }
 
+export function swiftDate(input: string | null): string | null {
+  if (input === null) return null;
+  return input.replace(/:(\d\d)Z$/, `:$1.000Z`);
+}
+
 export function isClientGeneratedId(id: unknown): boolean {
   return !!(typeof id === `string` && id.match(MATCH_CLIENT_GENERATED_ID));
 }
