@@ -65,7 +65,6 @@ export async function createOrder(
 
   const createItemsInput: CreateOrderWithItemsVariables['items'] = items.map((item) => ({
     orderId: createOrderInput.id!,
-    title: item.orderTitle,
     editionId: item.editionId,
     quantity: item.quantity,
     unitPrice: item.unitPrice,
