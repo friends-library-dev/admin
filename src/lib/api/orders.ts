@@ -15,7 +15,14 @@ import {
   CreateOrderWithItemsVariables,
 } from '../../graphql/CreateOrderWithItems';
 import { OrderAddress, OrderItem } from '../../types';
-import { Lang, OrderSource, PrintJobStatus, PrintSize } from '../../graphql/globalTypes';
+import {
+  CreateOrderInput,
+  CreateOrderItemInput,
+  Lang,
+  OrderSource,
+  PrintJobStatus,
+  PrintSize,
+} from '../../graphql/globalTypes';
 import * as price from '../../lib/price';
 
 /* CreateOrder */
@@ -40,7 +47,7 @@ export async function createOrder(
     return result.error(`User cancelled`);
   }
 
-  const createOrderInput: CreateOrderWithItemsVariables['order'] = {
+  const createOrderInput: CreateOrderInput = {
     id: uuid(),
     lang: items.some((i) => i.lang === `es`) ? Lang.es : Lang.en,
     email,
@@ -63,12 +70,15 @@ export async function createOrder(
     paymentId: `internal--complimentary--${uuid().split(`-`).shift()}`,
   };
 
-  const createItemsInput: CreateOrderWithItemsVariables['items'] = items.map((item) => ({
-    orderId: createOrderInput.id!,
-    editionId: item.editionId,
-    quantity: item.quantity,
-    unitPrice: item.unitPrice,
-  }));
+  const createItemsInput = items.map((item) => {
+    const inputItem: CreateOrderItemInput = {
+      orderId: createOrderInput.id!,
+      editionId: item.editionId,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+    };
+    return inputItem;
+  });
 
   try {
     const { data } = await client.mutate<
