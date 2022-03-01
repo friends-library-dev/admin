@@ -253,7 +253,7 @@ export const EditFriend: React.FC<Props> = ({
       />
       <NestedCollection
         label="Document"
-        items={friend.documents.slice(0, 2)}
+        items={friend.documents}
         onAdd={() =>
           dispatch({
             type: `add_item`,
