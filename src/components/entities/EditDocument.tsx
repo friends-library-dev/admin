@@ -93,8 +93,7 @@ export const EditDocument: React.FC<Props> = ({
           type="text"
           label="Slug:"
           value={doc.slug}
-          isValid={(slug) => slug.length > 3 && !!slug.match(/^([a-z-]+)$/)}
-          invalidMessage="min length 3, only lowercase letters and dashes"
+          isValid={(slug) => slug.length > 3 && !!slug.match(/^([a-z][a-z0-9-]+)$/)}
           onChange={replace(`slug`)}
           className="w-1/2"
         />
