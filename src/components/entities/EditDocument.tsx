@@ -108,7 +108,7 @@ export const EditDocument: React.FC<Props> = ({
           className="w-1/2"
         />
       </div>
-      <div className="pt-2 pb-1 space-x-4 flex justify-between">
+      <div className="pt-2 pb-1 space-x-3 flex justify-between">
         <label className="label">Tags:</label>
         {Object.values(TagType).map((tag) => (
           <LabledCheckbox
