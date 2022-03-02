@@ -31,7 +31,7 @@ export function prepIds<T extends Record<string, unknown>>(record: T): T {
     const value = record[key];
     if (isClientGeneratedId(value)) {
       // @ts-ignore
-      record[key] = value.replace(/^_/, ``);
+      record[key] = removeClientGeneratedIdPrefix(value);
     }
   }
   return record;
@@ -44,6 +44,10 @@ export function swiftDate(input: string | null): string | null {
 
 export function isClientGeneratedId(id: unknown): boolean {
   return !!(typeof id === `string` && id.match(MATCH_CLIENT_GENERATED_ID));
+}
+
+export function removeClientGeneratedIdPrefix(id: string): string {
+  return id.replace(/^_/, ``);
 }
 
 const MATCH_CLIENT_GENERATED_ID =

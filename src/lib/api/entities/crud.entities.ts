@@ -11,6 +11,7 @@ import * as relatedDocument from './crud.related-document';
 import * as token from './crud.token';
 import * as tokenScope from './crud.token-scope';
 import { EditableEntity, ErrorMsg } from '../../../types';
+import { removeClientGeneratedIdPrefix } from './helpers';
 
 export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
   console.log(`CREATE:`, entity);
@@ -44,7 +45,9 @@ export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | n
 
 export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
   console.log(`DELETE:`, entity);
+  entity.id = removeClientGeneratedIdPrefix(entity.id);
   let err: ErrorMsg | null = null;
+  let treat404AsSuccess = true;
   switch (entity.__typename) {
     case `FriendQuote`:
       err = await quote.delete(entity);
@@ -74,19 +77,21 @@ export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | n
       err = await audioPart.delete(entity);
       break;
     case `Token`:
+      treat404AsSuccess = false;
       err = await token.delete(entity);
       break;
     case `TokenScope`:
       err = await tokenScope.delete(entity);
       break;
     case `Friend`:
+      treat404AsSuccess = false;
       err = await friend.delete(entity);
       break;
   }
 
   // foreign key cascades often mean that our entities get deleted
   // when the parent is deleted, so treat a DELETE -> 404 as success
-  if (err && err.includes(`notFound`)) {
+  if (err && err.includes(`notFound`) && treat404AsSuccess) {
     return null;
   }
 
