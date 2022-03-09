@@ -10,7 +10,7 @@ import { CreateFriendInput } from './globalTypes';
 // ====================================================
 
 export interface CreateFriend_friend {
-  __typename: 'Friend';
+  __typename: 'IdentifyEntity';
   id: string;
 }
 

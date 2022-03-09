@@ -10,7 +10,7 @@ import { CreateDocumentInput } from './globalTypes';
 // ====================================================
 
 export interface CreateDocument_document {
-  __typename: 'Document';
+  __typename: 'IdentifyEntity';
   id: string;
 }
 

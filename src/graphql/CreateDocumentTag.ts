@@ -10,7 +10,7 @@ import { CreateDocumentTagInput } from './globalTypes';
 // ====================================================
 
 export interface CreateDocumentTag_tag {
-  __typename: 'DocumentTag';
+  __typename: 'IdentifyEntity';
   id: string;
 }
 

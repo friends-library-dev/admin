@@ -10,7 +10,7 @@ import { CreateFriendResidenceInput } from './globalTypes';
 // ====================================================
 
 export interface CreateFriendResidence_residence {
-  __typename: 'FriendResidence';
+  __typename: 'IdentifyEntity';
   id: string;
 }
 

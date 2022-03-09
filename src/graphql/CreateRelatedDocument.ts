@@ -10,7 +10,7 @@ import { CreateRelatedDocumentInput } from './globalTypes';
 // ====================================================
 
 export interface CreateRelatedDocument_relatedDocument {
-  __typename: 'RelatedDocument';
+  __typename: 'IdentifyEntity';
   id: string;
 }
 
