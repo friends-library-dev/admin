@@ -2,7 +2,7 @@ import React, { useReducer, useState } from 'react';
 import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
 import { useQueryResult } from '../../lib/query';
-import { gql } from '../../client';
+import { gql, writable } from '../../client';
 import { EditToken as EditTokenQuery } from '../../graphql/EditToken';
 import TextInput from '../TextInput';
 import { Scope as TokenScope } from '../../graphql/globalTypes';
@@ -92,7 +92,7 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
                     scopes.splice(
                       initialIndex,
                       0,
-                      JSON.parse(JSON.stringify(initialToken.scopes[initialIndex])),
+                      writable(initialToken.scopes[initialIndex]!),
                     );
                   } else {
                     scopes.push(empty.tokenScope(token.id, scope));
@@ -121,7 +121,7 @@ const EditTokenContainer: React.FC = () => {
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  return <EditToken token={JSON.parse(JSON.stringify(query.data.token))} />;
+  return <EditToken token={writable(query.data.token)} />;
 };
 
 function sortScopes(scopes: TokenScope[]): TokenScope[] {

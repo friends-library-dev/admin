@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { gql } from '../../client';
+import { gql, writable } from '../../client';
 import { useQueryResult } from '../../lib/query';
 import { GetTokens } from '../../graphql/GetTokens';
 import { Scope as TokenScope } from '../../graphql/globalTypes';
@@ -59,7 +59,7 @@ const ListTokensContainer: React.FC = () => {
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  const tokens: GetTokens['tokens'] = JSON.parse(JSON.stringify(query.data.tokens));
+  const tokens: GetTokens['tokens'] = writable(query.data.tokens);
   tokens.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
   return <ListTokens tokens={tokens} />;
 };

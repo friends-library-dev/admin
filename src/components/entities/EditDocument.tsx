@@ -1,5 +1,11 @@
 import React, { useReducer, useState } from 'react';
 import isEqual from 'lodash.isequal';
+import { gql } from '@apollo/client';
+import {
+  EDIT_DOCUMENT_FIELDS,
+  SELECTABLE_DOCUMENTS_FIELDS,
+  writable,
+} from '../../client';
 import {
   ReducerReplace,
   Reducer,
@@ -7,8 +13,6 @@ import {
   SelectableDocuments,
 } from '../../types';
 import TextInput from '../TextInput';
-import { gql } from '@apollo/client';
-import { EDIT_DOCUMENT_FIELDS, SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
 import { useParams } from 'react-router-dom';
 import { useQueryResult } from '../../lib/query';
 import {
@@ -236,7 +240,7 @@ const EditDocumentContainer: React.FC = () => {
     setLoaded(true);
     dispatch({
       type: `replace`,
-      state: sort.document(JSON.parse(JSON.stringify(query.data.document))),
+      state: sort.document(writable(query.data.document)),
     });
   }
 

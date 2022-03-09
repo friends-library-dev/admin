@@ -13,7 +13,11 @@ import { Gender, Lang } from '../../graphql/globalTypes';
 import reducer, { isValidYear } from '../../lib/reducer';
 import NestedCollection from './NestedCollection';
 import { EditDocument } from './EditDocument';
-import { EDIT_DOCUMENT_FIELDS, SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
+import {
+  EDIT_DOCUMENT_FIELDS,
+  SELECTABLE_DOCUMENTS_FIELDS,
+  writable,
+} from '../../client';
 import {
   EditableFriend,
   Reducer,
@@ -305,7 +309,7 @@ const EditFriendContainer: React.FC = () => {
   }
   return (
     <EditFriend
-      friend={sort.friend(JSON.parse(JSON.stringify(query.data.friend)))}
+      friend={sort.friend(writable(query.data.friend))}
       selectableDocuments={query.data.selectableDocuments}
     />
   );
