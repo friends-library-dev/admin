@@ -10,7 +10,7 @@ import { CreateFriendQuoteInput } from './globalTypes';
 // ====================================================
 
 export interface CreateFriendQuote_quote {
-  __typename: 'IdentifyEntity';
+  __typename: 'FriendQuote';
   id: string;
 }
 

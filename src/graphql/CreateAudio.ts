@@ -10,7 +10,7 @@ import { CreateAudioInput } from './globalTypes';
 // ====================================================
 
 export interface CreateAudio_audio {
-  __typename: 'IdentifyEntity';
+  __typename: 'Audio';
   id: string;
 }
 

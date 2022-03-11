@@ -10,7 +10,7 @@ import { CreateTokenScopeInput } from './globalTypes';
 // ====================================================
 
 export interface CreateTokenScope_part {
-  __typename: 'IdentifyEntity';
+  __typename: 'TokenScope';
   id: string;
 }
 

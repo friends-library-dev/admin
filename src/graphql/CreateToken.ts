@@ -10,7 +10,7 @@ import { CreateTokenInput } from './globalTypes';
 // ====================================================
 
 export interface CreateToken_part {
-  __typename: 'IdentifyEntity';
+  __typename: 'Token';
   id: string;
 }
 
