@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
+import omit from 'lodash.omit';
 import {
   PlusCircleIcon,
   XCircleIcon,
@@ -41,7 +42,7 @@ const CreateOrder: React.FC = () => {
         return;
       }
       setEmail(result.value.email);
-      setAddress(result.value.address);
+      setAddress(omit(result.value.address, `__typename`));
     });
   }, []);
 
