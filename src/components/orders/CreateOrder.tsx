@@ -20,6 +20,7 @@ import COUNTRIES from '../../lib/countries';
 import * as price from '../../lib/price';
 import Button from '../Button';
 import InfoMessage from '../InfoMessage';
+import { Link } from 'react-router-dom';
 
 const CreateOrder: React.FC = () => {
   const [selectingBook, setSelectingBook] = useState(false);
@@ -255,7 +256,10 @@ const CreateOrder: React.FC = () => {
         </Button>
         {submitResult?.success === true && (
           <InfoMessage type="success">
-            Success! Order <code className="text-blue-500">{submitResult.value}</code>
+            Success! Order{` `}
+            <Link to={`/orders/${submitResult.value}`}>
+              <code className="text-blue-500">{submitResult.value}</code>
+            </Link>
             {` `}
             created.
           </InfoMessage>

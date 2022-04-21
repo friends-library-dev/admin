@@ -145,7 +145,7 @@ export async function getPrintJobExploratoryMetadata(
 
     return result.success(data.metadata);
   } catch (err) {
-    let error = String(err);
+    const error = String(err);
     if (error.includes(`noExploratoryMetadataRetrieved`)) {
       return result.error(`Shipping not possible`);
     }
