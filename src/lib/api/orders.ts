@@ -121,28 +121,36 @@ export async function getPrintJobExploratoryMetadata(
   address: OrderAddress,
   items: Array<Pick<OrderItem, 'pages' | 'printSize' | 'quantity'>>,
 ): Promise<Result<GetPrintJobExploratoryMetadata['metadata']>> {
-  const { data, error } = await client.query<
-    GetPrintJobExploratoryMetadata,
-    GetPrintJobExploratoryMetadataVariables
-  >({
-    query: QUERY_PRINT_JOB_EXPLORATORY_METADATA,
-    variables: {
-      input: {
-        address,
-        items: items.map((item) => ({
-          volumes: item.pages,
-          printSize: item.printSize as PrintSize,
-          quantity: item.quantity,
-        })),
+  try {
+    const { data, error } = await client.query<
+      GetPrintJobExploratoryMetadata,
+      GetPrintJobExploratoryMetadataVariables
+    >({
+      query: QUERY_PRINT_JOB_EXPLORATORY_METADATA,
+      variables: {
+        input: {
+          address,
+          items: items.map((item) => ({
+            volumes: item.pages,
+            printSize: item.printSize as PrintSize,
+            quantity: item.quantity,
+          })),
+        },
       },
-    },
-  });
+    });
 
-  if (!data || error) {
-    return result.apolloError(error);
+    if (!data || error) {
+      return result.apolloError(error);
+    }
+
+    return result.success(data.metadata);
+  } catch (err) {
+    let error = String(err);
+    if (error.includes(`noExploratoryMetadataRetrieved`)) {
+      return result.error(`Shipping not possible`);
+    }
+    return result.error(error);
   }
-
-  return result.success(data.metadata);
 }
 
 const QUERY_PRINT_JOB_EXPLORATORY_METADATA = gql`
