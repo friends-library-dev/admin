@@ -29,6 +29,7 @@ export const EditAudio: React.FC<AudioProps> = ({ audio, replace }) => (
           [`Josué Rodriguez`, `Josué Rodriguez`],
           [`Jared Henderson`, `Jared Henderson`],
           [`Ryan McMaster`, `Ryan McMaster`],
+          [`Lilly Costa and Kristi Ensminger`, `Lilly Costa and Kristi Ensminger`],
         ]}
       />
       <LabeledToggle
