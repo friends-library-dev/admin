@@ -69,7 +69,7 @@ export function audio(editionId: UUID): EditableAudio {
   return {
     __typename: `Audio`,
     id: clientGeneratedId(),
-    reader: ``,
+    reader: `Jessie Henderson`,
     isIncomplete: false,
     m4bSizeHq: 0,
     m4bSizeLq: 0,
